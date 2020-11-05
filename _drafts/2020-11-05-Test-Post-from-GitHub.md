@@ -5,6 +5,6 @@ author: Alex
 post_excerpt: ""
 layout: post
 permalink: https://alexbowe.com/?p=437
-published: false
+published: true
 ---
-This is a post to test posting from GitHub.
+This is a post to test posting from GitHub. It'll be gone soon - please ignore it.
