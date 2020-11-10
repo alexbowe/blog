@@ -127,6 +127,7 @@ some redundancy, since some <em>nodes</em> are represented more times than neces
 
 <p>We further exploit the <a href="https://en.wikipedia.org/wiki/Mutual_information">mutual information</a> of edges by taking inspiration from the Burrows Wheeler Transform<a href="#fn:6" id="fnref:6" title="see footnote" class="footnote">[6]</a>.</p>
 
+<br/><br/>
 <h3 id="bwt-inspiration">Inspiration from the Burrows Wheeler Transform</h3>
 
 <p>The Burrows Wheeler Transform<a href="#fn:6" title="see footnote" class="footnote">[6]</a> is a reversible string permutation that can be searched directly and has the admirable quality of
@@ -141,6 +142,8 @@ auxiliary bit vectors indicating which edges are leaves, and which are the last 
 
 <p>I won&#8217;t go into detail, but in the next section you should be able to see glimpses of these two ideas.</p>
 
+
+<br/><br/>
 <h3 id="construction">Construction</h3>
 
 <p>The simplest construction method<a href="#fn:8" id="fnref:8" title="see footnote" class="footnote">[8]</a> is to take every &lt;node, edge&gt; pair and sort them based on the reverse of the node label (colex order), removing
@@ -190,6 +193,8 @@ positions:</p>
 $m \log{2*\sigma} = 3 m$ bits (for DNA), and $\sigma \log{m} = o(m)$ bits<a href="#fn:10" id="fnref:10" title="see footnote" class="footnote">[10]</a>, given $m$ edges - a bit over 4 bits per edge.
 Using appropriate structures (not detailed) we can compress this further, to around 3 bits per edge.</p>
 
+
+<br/><br/>
 <h3 id="ranksel">Rank and Select</h3>
 
 <p>Rank and select are the bread and butter of succinct data structures, because so many operations can be implemented using them alone.
@@ -216,6 +221,8 @@ A rank and a select query can find a range where either a start point or end poi
 if represent a bitvector using the structure described by Raman, Raman and Rao in 2007<a href="#fn:12" id="fnref:12" title="see footnote" class="footnote">[12]</a> (which I explained in <a href="https://alexbowe.com/rrr">an earlier blog post</a>), and for larger alphabets
 use the index described by Ferragina, Manzini, Makinen, and Navarro in 2006<a href="#fn:13" id="fnref:13" title="see footnote" class="footnote">[13]</a>. In our implementation, we use modified versions to get it down to 3 bits per edge.</p>
 
+
+<br/><br/>
 <h3 id="interface">Interface Overview</h3>
 
 <p>While it might not be obvious, these three arrays provides support for a full suite of navigation operations.
@@ -298,6 +305,8 @@ An overview is given in these tables, which link to the implementation details t
 </table>
 <p>The details of the above functions are given in the following sections.</p>
 
+
+<br/><br/>
 <h3 id="forward">Forward</h3>
 
 <p>In order to support the public interface, we create for ourselves a simpler way to work with edges: the complementing forward and backward functions.</p>
@@ -332,6 +341,8 @@ Because the last array is binary only, this requires us to count how many 1s the
 
 <p>The W access, rank over W, rank and select over L, accessing F, and the addition are all done in O(1) time, so forward also takes O(1) time.</p>
 
+
+<br/><br/>
 <h3 id="backward">Backward</h3>
 
 <p>Backward is very similar to forward, but calculated in a different order: we find the relative index of the node label first, and use that to find the corresponding edge (which may not be the
@@ -347,6 +358,7 @@ only edge to point to this node, but we define it to point to the first one, tha
 
 <p>For similar reasons to Forward this is O(1).</p>
 
+<br/><br/>
 <h3 id="outdegree">Outdegree</h3>
 
 <p>This is an easy one. This function accepts a <strong>node</strong> (not edge!) index <code>v</code>, and returns the number of outgoing edges from that node. Why did I say this was easy?
@@ -368,6 +380,8 @@ edge of that node. Then we simply subtract the position of the previous node (no
 
 <p>Select queries can be answered in O(1) time, so outdegree is also O(1).</p>
 
+
+<br/><br/>
 <h3 id="outgoing">Outgoing</h3>
 
 <p>Outgoing(v,c) returns the target node after traversing edge c from node v, which might not exist.
@@ -403,6 +417,8 @@ index before returning it.</p>
 
 <p>This is a constant number of calls to O(1) functions, so outgoing is also O(1).</p>
 
+
+<br/><br/>
 <h3 id="label">Label</h3>
 
 <p>At some point (e.g. during traversal) we are probably going to want to print the node labels out. Let&#8217;s work out how to do that (:</p>
@@ -429,6 +445,8 @@ This happens to be row 8, so from F we know that all the last symbols between on
 </figure>
 </center>
 
+
+<br/><br/>
 <h3 id="indegree">Indegree</h3>
 
 <p>In a similar manner to <a href="#outdegree">outdegree</a>, all we need to do is count the edges that point to the current node label.
@@ -464,6 +482,7 @@ Then we use rank to calculate how many $G-$ there are to the end position, and s
 
 <p>This is once again a constant number of $O(1)$ function calls, which means $indegree()$ is also $O(1)$.</p>
 
+<br/><br/>
 <h3 id="incoming">Incoming</h3>
 
 <p>Incoming, which returns the predecessor node that begins with the provided symbol, is probably the most difficult operation to implement. However, it
