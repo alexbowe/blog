@@ -6,14 +6,16 @@ post_excerpt: ""
 layout: post
 permalink: https://alexbowe.com/?p=442
 published: false
+categories:
+- Interviewing
+- Career
 ---
-# Effective LeetCode
 
 ## TODO
 
-- [ ] Clean up script and post on GitHub.
-- [ ] Write in Scrivener or Ulysses.
-- [ ] Do analysis again - take questions that give top 80% of each tag, instead of grouping by tag. Expect a breadth of questions. Inspect both lists and explain why one is better than another.
+-[ ] Clean up script and post on GitHub.
+-[ ] Write in Scrivener or Ulysses.
+-[ ] Do analysis again - take questions that give top 80% of each tag, instead of grouping by tag. Expect a breadth of questions. Inspect both lists and explain why one is better than another.
 
 ## Introduction
 
