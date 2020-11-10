@@ -28,6 +28,7 @@ it is merely meant to demonstrate the key ideas with (hopefully) readable high l
 
 <p>Okay, here we go&#8230;</p>
 
+<br><br>
 <h2 id="debruijn-graphs">De Bruijn Graphs</h2>
 
 <p>De Bruijn graphs are a beautifully simple, yet useful combinatoric object which I challenge you not to lose sleep over.</p>
@@ -57,6 +58,7 @@ differ by 1 symbol. This will also be important later.</p>
 
 <p>And of course, this can be extended to larger alphabet sizes than binary (say, 4&#8230;).</p>
 
+<br><br>
 <h2 id="dna-assembly">DNA Assembly</h2>
 
 <p>First suggested in 2001 by Pevzner et al.<a href="#fn:1" id="fnref:1" title="see footnote" class="footnote">[1]</a>, we can use de Bruijn graphs to represent a network of overlapping
@@ -84,7 +86,7 @@ Of course it is a bit more complicated than this in reality, but this is the ess
 in Bioinformatics the term &#8220;de Bruijn graph&#8221; is overloaded to mean a subgraph. Even though genomes are long strings, most genomes won&#8217;t
 have <em>every single k-mer</em> present, and there is usually repeated regions. This means our data will be sparse.</p>
 
-<p>Consider the following contrived example. Take the sequence <code>TACGACGTCGACT</code>. If we set <span class="math">\(k=3\)</span>, our k-mers will be <code>TAC</code>, <code>ACG</code>, <code>CGA</code>, and so on.
+<p>Consider the following contrived example. Take the sequence <code>TACGACGTCGACT</code>. If we set <span class="math">(k=3)</span>, our k-mers will be <code>TAC</code>, <code>ACG</code>, <code>CGA</code>, and so on.
 We would end up with this de Bruijn graph:</p>
 
 <center>
@@ -102,6 +104,7 @@ data structure and how it provides all required navigation options to implement 
 if only to reduce hardware requirements of sequencing (thus proliferating personal genomics), and potentially improve traversal speed (due to better memory locality).
 Increased efficiency might also enable richer multiple-genomic analysis.</p>
 
+<br><br>
 <h2 id="previous">Previous Representations</h2>
 
 <p>One of the first approaches to this was to scale &#8220;horizontally&#8221;. Simpson et al.<a href="#fn:2" id="fnref:2" title="see footnote" class="footnote">[2]</a> introduced ABySS in 2009. The <a href="ftp://ftp.ddbj.nig.ac.jp/ddbj_database/dra/fastq/SRA010/SRA010896/SRX016231/">graph for reads from a human genome (HapMap: NA18507)</a>,
@@ -114,6 +117,7 @@ and used <a href="#ranksel">rank and select</a> (to be described shortly) to tra
 <p>Minia, by Cikhi and Rizk (2012)<a href="#fn:5" id="fnref:5" title="see footnote" class="footnote">[5]</a>, proposed yet another approach by using a <a href="http://en.wikipedia.org/wiki/Bloom_filter">bloom filter</a> (with additional structure to avoid false positive edges that would
 affect the assembly). They traverse by generating possible edges and testing for it in the bloom filter. Using this approach, the graph was reduced to 5.7 GB.</p>
 
+<br><br>
 <h2 id="our-repr">Our Succinct Representation</h2>
 
 <p>As stated, we were able to represent the same graph in 2.5 GB (after some further compression techniques, which I will save for a future post).</p>
@@ -182,8 +186,8 @@ positions:</p>
 </figure>
 </center>
 
-<p>In total we have a bitvector $L$, an array of flagged edge labels $W$, and a position array $F$ of size $\sigma$ (the alphabet size). Respectively, these take $m$ bits,
-$m \log{2*sigma} = 3 m$ bits (for DNA), and $\sigma \log{m} = o(m)$ bits<a href="#fn:10" id="fnref:10" title="see footnote" class="footnote">[10]</a>, given $m$ edges - a bit over 4 bits per edge.
+<p>In total we have a bitvector $L$, an array of flagged edge labels $W$, and a position array $F$ of size $sigma$ (the alphabet size). Respectively, these take $m$ bits,
+$m log{2*sigma} = 3 m$ bits (for DNA), and $sigma log{m} = o(m)$ bits<a href="#fn:10" id="fnref:10" title="see footnote" class="footnote">[10]</a>, given $m$ edges - a bit over 4 bits per edge.
 Using appropriate structures (not detailed) we can compress this further, to around 3 bits per edge.</p>
 
 <h3 id="ranksel">Rank and Select</h3>
@@ -208,7 +212,7 @@ as an indirect addressing technique (such as addressing a node using the $L$ arr
 Two rank queries can count over a range, whereas two select queries can find a range.
 A rank and a select query can find a range where either a start point or end point are fixed.</p>
 
-<p>Rank, select and standard array access can all be done in $\mathcal{O}(1)$ time when $\sigma = polylog(N)$<a href="#fn:11" id="fnref:11" title="see footnote" class="footnote">[11]</a>,
+<p>Rank, select and standard array access can all be done in $mathcal{O}(1)$ time when $sigma = polylog(N)$<a href="#fn:11" id="fnref:11" title="see footnote" class="footnote">[11]</a>,
 if represent a bitvector using the structure described by Raman, Raman and Rao in 2007<a href="#fn:12" id="fnref:12" title="see footnote" class="footnote">[12]</a> (which I explained in <a href="https://alexbowe.com/rrr">an earlier blog post</a>), and for larger alphabets
 use the index described by Ferragina, Manzini, Makinen, and Navarro in 2006<a href="#fn:13" id="fnref:13" title="see footnote" class="footnote">[13]</a>. In our implementation, we use modified versions to get it down to 3 bits per edge.</p>
 
@@ -236,14 +240,14 @@ An overview is given in these tables, which link to the implementation details t
 
 <tbody>
 <tr>
-	<td style="text-align:left;"><a href="#forward"><span class="math">\(forward(i)\)</span></a></td>
-	<td style="text-align:left;">Return index of the <em>last edge</em> of the <em>node pointed to</em> by edge <span class="math">\(i\)</span>.</td>
-	<td style="text-align:left;"><span class="math">\(\mathcal{O}(1)\)</span></td>
+	<td style="text-align:left;"><a href="#forward"><span class="math">(forward(i))</span></a></td>
+	<td style="text-align:left;">Return index of the <em>last edge</em> of the <em>node pointed to</em> by edge <span class="math">(i)</span>.</td>
+	<td style="text-align:left;"><span class="math">(mathcal{O}(1))</span></td>
 </tr>
 <tr>
-	<td style="text-align:left;"><a href="#backward"><span class="math">\(backward(i)\)</span></a></td>
-	<td style="text-align:left;">Return index of the <em>first edge</em> that <em>points to the node</em> that the edge at <span class="math">\(i\)</span> <em>exits</em>.</td>
-	<td style="text-align:left;"><span class="math">\(\mathcal{O}(1)\)</span></td>
+	<td style="text-align:left;"><a href="#backward"><span class="math">(backward(i))</span></a></td>
+	<td style="text-align:left;">Return index of the <em>first edge</em> that <em>points to the node</em> that the edge at <span class="math">(i)</span> <em>exits</em>.</td>
+	<td style="text-align:left;"><span class="math">(mathcal{O}(1))</span></td>
 </tr>
 </tbody>
 </table>
@@ -266,29 +270,29 @@ An overview is given in these tables, which link to the implementation details t
 
 <tbody>
 <tr>
-	<td style="text-align:left;"><a href="#outdegree"><span class="math">\(outdegree(v)\)</span></a></td>
-	<td style="text-align:left;">Return number of outgoing edges from node <span class="math">\(v\)</span>.</td>
-	<td style="text-align:left;"><span class="math">\(\mathcal{O}(1)\)</span></td>
+	<td style="text-align:left;"><a href="#outdegree"><span class="math">(outdegree(v))</span></a></td>
+	<td style="text-align:left;">Return number of outgoing edges from node <span class="math">(v)</span>.</td>
+	<td style="text-align:left;"><span class="math">(mathcal{O}(1))</span></td>
 </tr>
 <tr>
-	<td style="text-align:left;"><a href="#outgoing"><span class="math">\(outgoing(v,c)\)</span></a></td>
-	<td style="text-align:left;">From node <span class="math">\(v\)</span>, follow the edge labeled by symbol <span class="math">\(c\)</span>.</td>
-	<td style="text-align:left;"><span class="math">\(\mathcal{O}(1)\)</span></td>
+	<td style="text-align:left;"><a href="#outgoing"><span class="math">(outgoing(v,c))</span></a></td>
+	<td style="text-align:left;">From node <span class="math">(v)</span>, follow the edge labeled by symbol <span class="math">(c)</span>.</td>
+	<td style="text-align:left;"><span class="math">(mathcal{O}(1))</span></td>
 </tr>
 <tr>
-	<td style="text-align:left;"><a href="#label"><span class="math">\(label(v)\)</span></a></td>
-	<td style="text-align:left;">Return (string) label of node <span class="math">\(v\)</span>.</td>
-	<td style="text-align:left;"><span class="math">\(\mathcal{O}(k)\)</span></td>
+	<td style="text-align:left;"><a href="#label"><span class="math">(label(v))</span></a></td>
+	<td style="text-align:left;">Return (string) label of node <span class="math">(v)</span>.</td>
+	<td style="text-align:left;"><span class="math">(mathcal{O}(k))</span></td>
 </tr>
 <tr>
-	<td style="text-align:left;"><a href="#indegree"><span class="math">\(indegree(v)\)</span></a></td>
-	<td style="text-align:left;">Return number of incoming edges to node <span class="math">\(v\)</span>.</td>
-	<td style="text-align:left;"><span class="math">\(\mathcal{O}(1)\)</span></td>
+	<td style="text-align:left;"><a href="#indegree"><span class="math">(indegree(v))</span></a></td>
+	<td style="text-align:left;">Return number of incoming edges to node <span class="math">(v)</span>.</td>
+	<td style="text-align:left;"><span class="math">(mathcal{O}(1))</span></td>
 </tr>
 <tr>
-	<td style="text-align:left;"><a href="#incoming"><span class="math">\(incoming(v,c)\)</span></a></td>
-	<td style="text-align:left;">Return predecessor node starting with symbol <span class="math">\(c\)</span>, that has an edge to node <span class="math">\(v\)</span>.</td>
-	<td style="text-align:left;"><span class="math">\(\mathcal{O}(k \log \sigma) \)</span></td>
+	<td style="text-align:left;"><a href="#incoming"><span class="math">(incoming(v,c))</span></a></td>
+	<td style="text-align:left;">Return predecessor node starting with symbol <span class="math">(c)</span>, that has an edge to node <span class="math">(v)</span>.</td>
+	<td style="text-align:left;"><span class="math">(mathcal{O}(k log sigma) )</span></td>
 </tr>
 </tbody>
 </table>
@@ -298,8 +302,8 @@ An overview is given in these tables, which link to the implementation details t
 
 <p>In order to support the public interface, we create for ourselves a simpler way to work with edges: the complementing forward and backward functions.</p>
 
-<p>Recall that all node labels are defined by predecessor edges, then we have represented each edge in two different places: the <span class="math">\(F\)</span> array (which is equivalent to
-the last column of the &#8220;Node&#8221; array), and the edge array <span class="math">\(W\)</span>. It follows that, since it is sorted, the node labels maintain the same <em>relative order</em> as the
+<p>Recall that all node labels are defined by predecessor edges, then we have represented each edge in two different places: the <span class="math">(F)</span> array (which is equivalent to
+the last column of the &#8220;Node&#8221; array), and the edge array <span class="math">(W)</span>. It follows that, since it is sorted, the node labels maintain the same <em>relative order</em> as the
 edge labels. This can be seen in the following figure:</p>
 
 <center>
@@ -308,7 +312,7 @@ edge labels. This can be seen in the following figure:</p>
 </figure>
 </center>
 
-<p>Note that the number of <code>C</code>s in the last column of Node is different from the number of <code>C</code>s in <span class="math">\(W\)</span>, because the first <code>C</code> in <span class="math">\(W\)</span> points to two edges.
+<p>Note that the number of <code>C</code>s in the last column of Node is different from the number of <code>C</code>s in <span class="math">(W)</span>, because the first <code>C</code> in <span class="math">(W)</span> points to two edges.
 For this reason, we ignore the first edge from node <code>GAC</code> (although it doesn&#8217;t affect the relative order). In fact, we ignore any edge that doesnt have L[i] == 1.</p>
 
 <p>Then, following an edge is simply finding the corresponding relatively positioned node! All it takes is some creative counting, using <a href="#ranksel">rank and select</a>, as pictured
@@ -320,8 +324,8 @@ below:</p>
 </figure>
 </center>
 
-<p>First we access W[i] to find the edge label, then calculate <span class="math">\(rank_C\)</span> up to row to gives us the relative ordering of our <em>edges</em> with this label. Let&#8217;s call this relative index
-<span class="math">\(r\)</span>. In our example we are following the 2nd C-labeled edge.</p>
+<p>First we access W[i] to find the edge label, then calculate <span class="math">(rank_C)</span> up to row to gives us the relative ordering of our <em>edges</em> with this label. Let&#8217;s call this relative index
+<span class="math">(r)</span>. In our example we are following the 2nd C-labeled edge.</p>
 
 <p>To find the 2nd occurence of C in F, first we need to know where the first occurence is. We can use F to find that. Then we can select to the 2nd one, using the last array.
 Because the last array is binary only, this requires us to count how many 1s there are before the run of Cs (using rank), then adding 2 to land us at the 2nd C.</p>
@@ -360,7 +364,7 @@ to have a 0 for every edge from a given node, <em>except the last</em> edge. All
 are, then add 1. Put another way, we need to measure the distance between 1s (since the previous 1 will belong to the previous node). Since we know the node index, we can use select for that!</p>
 
 <p>In the above example, we are querying the outdegree of node 6 (the 7th node due to zero-basing). First we select to find the position of the 7th 1, which gives us the last
-edge of that node. Then we simply subtract the position of the previous node (node 5, the 6th node): <span class="math">\(select(7) - select(6) = 8 - 6 = 2\)</span>. Boom.</p>
+edge of that node. Then we simply subtract the position of the previous node (node 5, the 6th node): <span class="math">(select(7) - select(6) = 8 - 6 = 2)</span>. Boom.</p>
 
 <p>Select queries can be answered in O(1) time, so outdegree is also O(1).</p>
 
@@ -446,7 +450,7 @@ because we defined W to have minus flags if the source node has the same $k&#821
 </figure>
 </center>
 
-<p>From here it is simple enough to do a linear scan (or even use select) until the next non-flagged edge; the maximum distance it could be is $\sigma^2$,
+<p>From here it is simple enough to do a linear scan (or even use select) until the next non-flagged edge; the maximum distance it could be is $sigma^2$,
 For larger alphabets, a more efficient method is to use rank instead:</p>
 
 <center>
@@ -469,7 +473,7 @@ does use approaches similar to the previous functions.</p>
 iterate over the predecessor nodes, rather than using rank to simply count. Then, to disambiguate them by first character, we can use label().</p>
 
 <p>A linear scan over the predecessors in this fashion would work, but for large alphabets we can use binary search (with a select call before each array access)
-to support this in $O(k \log \sigma)$ time; $\log \sigma$ for
+to support this in $O(k log sigma)$ time; $log sigma$ for
 the binary search, where each access is a $O(1)$ select, followed by $O(k)$ to compute the label.</p>
 
 <p>This is demonstrated in the example below:</p>
@@ -480,13 +484,14 @@ the binary search, where each access is a $O(1)$ select, followed by $O(k)$ to c
 </figure>
 </center>
 
+<br><br>
 <h2 id="conclusion">Conclusion</h2>
 
 <p>In conclusion, by using memory more efficiently, hopefully the cost of genome seqeuencing can be reduced, both proliferating the technology, but also giving way to
 more advanced population analysis. To that end, we have described a novel approach to representing de Bruijn graphs efficiently, while supporting a full suite of
 navigation operations quickly. Much of the (BWT-inspired) construction can be done efficiently on disk, but we intend to improve this soon to compete with Minia.</p>
 
-<p>The total space is a theoretical $m(2 + \log{\sigma} + o(1))$ bits in general, or $4m + o(m)$ bits for DNA, given $m$ edges.
+<p>The total space is a theoretical $m(2 + log{sigma} + o(1))$ bits in general, or $4m + o(m)$ bits for DNA, given $m$ edges.
 Using specially modified indexes we can lower this to  around 3 bits per edge.</p>
 
 <p>I apologize that an efficient implementation isn&#8217;t available, nor have I provided experimental results. But if you found this post interesting
