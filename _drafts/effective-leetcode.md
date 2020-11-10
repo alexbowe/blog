@@ -1,3 +1,11 @@
+---
+post_title: Effective LeetCode
+post_excerpt: ""
+layout: post
+permalink: https://alexbowe.com/effective-leetcode
+published: false
+---
+
 # Effective LeetCode
 
 ## TODO
