@@ -1,11 +1,12 @@
 ---
+ID: 442
 post_title: Effective LeetCode
+author: Alex
 post_excerpt: ""
 layout: post
-permalink: https://alexbowe.com/effective-leetcode
+permalink: https://alexbowe.com/?p=442
 published: false
 ---
-
 # Effective LeetCode
 
 ## TODO
@@ -77,4 +78,4 @@ Future posts:
 - Complement it with Interviewing.io playbacks?
 
 [4hc-summary]: https://www.nateliason.com/notes/4-hour-chef-tim-ferriss
-[f20h-summary]: https://www.nateliason.com/notes/first-20-hours-josh-kaufman 
+[f20h-summary]: https://www.nateliason.com/notes/first-20-hours-josh-kaufman
